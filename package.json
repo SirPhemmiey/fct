@@ -7,9 +7,9 @@
     "node": "14.17.4"
   },
   "scripts": {
-    "start": "yarn run build && yarn run serve",
-    "start_dev": "NODE_ENV=development ts-node src/server.ts",
-    "serve": "node -r dotenv/config build/server.js",
+    "start_js": "tsc --p tsconfig.json && yarn run serve",
+    "start": "NODE_ENV=development ts-node src/server.ts",
+    "serve": "node build/server.js",
     "build": "yarn run clean && yarn run build-ts",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "watch-node": "nodemon -r dotenv/config build/server.js",
@@ -37,6 +37,7 @@
     "mongoose": "5.11.10",
     "morgan": "^1.10.0",
     "supertest": "^6.1.6",
+    "ts-node": "^10.4.0",
     "typescript": "^4.5.4",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5"
