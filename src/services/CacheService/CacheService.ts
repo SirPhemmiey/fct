@@ -12,10 +12,7 @@ interface CacheResponse {
     value: string
 }
 
-const TTL = parseInt(<string>process.env.TTL, 10) || 86400000;
 const now = new Date();
-
-
 
 export class CacheService {
 
