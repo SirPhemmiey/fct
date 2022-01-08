@@ -12,9 +12,10 @@ import { CacheService } from "./services/CacheService/CacheService";
 
 const CACHE_CAPACITY = getEnv().CACHE_CAPACITY;
 
-//this is going to be the base service where every other service or service container will inherit from
 /**
- * Thing that can be put in the service here are configurable timezones, configurable currency etc
+ * this is going to be the base service where every other service or service container will inherit from
+ * Things that can be put in the service here are configurable timezones, configurable currencies and other basic
+ * configurations or settings that can be configurable and common to all "services/environments" etc
  */
 export interface Service {
     environment: ENV,
@@ -25,15 +26,16 @@ export interface ServiceContainer extends Service {
     cacheDao: CacheDao,
 }
 
-
-// const service: ServiceContainer = {
-//     cacheDao,
-//     cacheService,
-// };
-
 const createContainer = (baseService: Service) => {
     const cacheDao = new CacheDaoMongo(getMongo(baseService.environment));
     const cacheService = new CacheService(cacheDao, CACHE_CAPACITY);
+
+    const container: ServiceContainer = {
+        ...baseService,
+        cacheDao,
+        cacheService,
+    }
+    return container;
 };
 
 const developmentBaseService: Service = {
@@ -48,14 +50,18 @@ const productionBaseService: Service = {
     environment: ENV.Production
 };  
 
+const developmentService = createContainer(developmentBaseService);
+const stagingService = createContainer(stagingBaseService);
+const productionService = createContainer(productionBaseService);
+
 //to use this service container anywhere else out of context
 export const getService = (env: ENV) => {
     if (env === ENV.Development) {
-        return developmentBaseService;
+        return developmentService;
     } else if (env === ENV.Staging) {
-        return stagingBaseService;
+        return stagingService;
     } else if (env === ENV.Production) {
-        return productionBaseService;
+        return productionService;
     }
     throw new Error("unknown env: " + env);
 };

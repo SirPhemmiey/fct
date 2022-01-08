@@ -70,7 +70,7 @@ export class CacheService {
          */
         if (allCache && allCache.length >= this.cacheCapacity) {
             await this.deleteByKey(allCache[0].key);
-            await this.set({ key: cache.key, last_modified: now, ttl: addMinutes(now, 2) })
+            return this.cacheDao.set({ key: cache.key, last_modified: now, ttl: addMinutes(now, 2) });
         }
         return this.cacheDao.set(cache);
     }

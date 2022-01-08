@@ -16,11 +16,6 @@ const createConnection = (uri: string) => {
 }
 let connectionMap: { [e in ENV]: mongoose.Connection };
 
-
-// export const getMongo = (): mongoose.Connection => {
-//     return createConnection(getEnv().MONGO_URI);
-// }
-
 export const getMongo = (env: ENV): mongoose.Connection => {
     if (!connectionMap) {
         connectionMap = {
