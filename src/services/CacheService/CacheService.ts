@@ -45,10 +45,10 @@ export class CacheService {
         // If current time is greater than the TTL of the key, generate a new value
         if (now.getTime() > cache.ttl.getTime()) {
             response.value = generatedValue;
-            console.info('TTL is elapsed, generate a new value and refresh TTL');
+            console.info('TTL is elapsed, generate a new value and then refresh TTL');
             await this.set({ key, value: generatedValue, ttl: addMinutes(now, 2), last_modified: now });
         } else {
-            console.info('TTL still on time, refresh TTL');
+            console.info('TTL still on time, do not update value and then refresh TTL');
             response.value = cache.value;
             await this.set({ key, ttl: addMinutes(now, 2), last_modified: now });
         }
