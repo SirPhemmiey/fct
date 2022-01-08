@@ -36,7 +36,7 @@
 
 - I applied the principle and idea of LRU. 
 
-- The Cache Capacity is configurable and passed from the environment variable. 
+- The Cache Capacity is configurable and passed from the environment variable. So the capacity is set when the `CacheService` class gets instantiated.
 
 - OOP Paradigm was used
 
@@ -48,3 +48,6 @@
 - Write more tests. Both unit, e2e and integration tests
 - Validation, Authentication, Authorization
 - Dockerization
+- More (smart) configuration on Logger (winston, bunyan)
+- Monitoring (with New Relic, Prometheus/Grafana)
+- Test coverage
