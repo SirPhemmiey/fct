@@ -14,9 +14,7 @@ export const getAllCacheData = (req: Request, res: Response) => {
         response.handleSuccess(res, {
             status: messages.SUCCESS,
             statusCode: statusCode.OK,
-            data: {
-                cacheData,
-            }
+            data: cacheData,
         });
     }).catch((err) => {
         console.error(err.message);
@@ -31,9 +29,7 @@ export const getCacheByKey = (req: Request, res: Response) => {
         response.handleSuccess(res, {
             status: messages.SUCCESS,
             statusCode: statusCode.OK,
-            data: {
-                cacheResponse,
-            }
+            data: cacheResponse,
         });
     })
     .catch((err) => {

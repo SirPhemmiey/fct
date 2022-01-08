@@ -2,17 +2,14 @@ import { Schema, model, Document, Model, Connection } from 'mongoose';
 import { mapToMongoDoc, mapToMongoDocs } from '../../utils/mongoUtils';
 import { Cache, CacheDao } from './CacheDao';
 
-export const DOCUMENT_NAME = 'Cache';
+export const DOCUMENT_NAME = 'cache';
 
 const schema = new Schema(
     {
-        key: {
-            type: Schema.Types.String,
-            index: 'text'
-        },
-        value: Schema.Types.String,
-        ttl: Schema.Types.Date,
-        last_modified: Schema.Types.Date,
+        key: String,
+        value: String,
+        ttl: Date,
+        last_modified: Date,
     },
     {
         timestamps: false,
@@ -65,7 +62,7 @@ export class CacheDaoMongo implements CacheDao {
     set(cache: Cache): Promise<void> {
         return this.model.findOneAndUpdate({ key: cache.key }, {
             '$set': cache,
-        }, { new: true }).then((r) => {
+        }, { new: true, upsert: true, }).then((r) => {
             return;
         })
     }

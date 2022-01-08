@@ -1,4 +1,5 @@
-import { addMinutes, generateRandomString } from "../../utils";
+import { addMinutes } from "date-fns";
+import { generateRandomString } from "../../utils";
 import { CacheDao, Cache } from "./CacheDao";
 
 enum CacheType {
@@ -66,10 +67,15 @@ export class CacheService {
          * This way, we won't exceed our cache limit/capacity at all
          */
         if (allCache && allCache.length >= this.cacheCapacity) {
+            console.log('hereee');
             await this.deleteByKey(allCache[0].key);
             return this.cacheDao.set({ key: cache.key, last_modified: now, ttl: addMinutes(now, 2) });
         }
-        return this.cacheDao.set(cache);
+        cache.ttl = now;
+        cache.last_modified = now;
+        console.log({cache});
+        await this.cacheDao.set(cache);
+        return;
     }
 
 }

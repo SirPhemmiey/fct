@@ -10,6 +10,7 @@ const createConnection = (uri: string) => {
     const conn = mongoose.createConnection(uri);
     conn.on('error', console.error.bind(console, 'mongo connection error:'));
     conn.once('open', function callback() {
+        console.info('connection to mongodb successfull');
         return;
     });
     return conn;
