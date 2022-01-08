@@ -36,3 +36,9 @@ yarn start
 ## How to test? 
 
 `yarn test`
+
+### Patterns and Principles used in the project
+
+```
+https://github.com/SirPhemmiey/fct/blob/master/IDEAS.md
+```
