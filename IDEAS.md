@@ -19,19 +19,19 @@
 
 - Application of some SOLID principles were applied. For instance, `Single Responsibility Principle`, `Dependency Inversion`
 
-- Dependency Injestion container was used
+- Dependency Injection principle and Dependency Injection container was used
 
-- I applied versioning because it helps us to iterate faster when the needed changes are identified in the APIs. Versioning could be by URL or using a custom request header
+- API versioning was used because it helps us to iterate faster when the needed changes are identified in the APIs. Versioning could be by URL or using a custom request header. It's a good practice to have it implemented in production-ready APIs.
 
 - Abstraction was heavily used
 
-- `src/services` contains the services and also the Daos (Data access object) which helps abstracts the complexity of services directly making database calls but instead an indirection (Dependency Inversion)
+- `src/services` contains the service(s) and also the DAOs (Data access objects) which helps abstracts the complexity of services directly making database calls but instead an indirection (`Dependency Inversion`)
 
--  Separation of concerns and layering components: Service does not directly make database calls but instead should be moved to a controller.
+- Separation of concerns and layering components: Service does not directly make database calls but instead should be moved to a controller. Services, Routes, Controllers, DAOs, Database Queries are all seperated as "components" and injected into which ever service needs it. 
 
-- The `Repository` design pattern was used. This is evident where we have all the database calls in a file and an interface is used to interact with it from the outside
+- The `Repository` design pattern was used. This is evident where we have all the database calls are in a file and an interface is used to interact with it from the outside. 
 
-- I applied the principle and idea of LRU
+- I applied the principle and idea of LRU. 
 
 ### Things i would have done
 - Write more tests. Both unit and integration tests
