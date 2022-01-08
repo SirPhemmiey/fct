@@ -69,9 +69,9 @@ export class CacheService {
         /**
          * This approach is known as the LRU Cache method/approach
          * If the cache size/length is equal or greater than allowed capacity (at class instantiation)
-         * We're getting least used key by  sorting the last_modified date in ascending order (1)
+         * We're getting least recently used key by sorting the last_modified date in ascending order (1)
          * And then we're deleting it and replacing it with a new key
-         * This way, we won't exceed our cache limit/capacity at all which is a business requirement
+         * This way, we won't exceed our cache limit/capacity at all which is an important business requirement in our case
          */
         if (allCache && allCache.length >= this.cacheCapacity) {
             console.info('cache limit reached');
