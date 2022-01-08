@@ -55,15 +55,17 @@ export class CacheService {
         return response;
     }
 
-    async deleteAll(): Promise<void> {
-        return this.cacheDao.deleteAll();
+    async deleteAll(): Promise<boolean> {
+        await this.cacheDao.deleteAll();
+        return true;
     }
 
-    async deleteByKey(key: string): Promise<void> {
-        return this.cacheDao.deleteByKey(key);
+    async deleteByKey(key: string): Promise<boolean> {
+        await this.cacheDao.deleteByKey(key);
+        return true;
     }
 
-    async set(cache: Partial<Cache>): Promise<void> {
+    async set(cache: Partial<Cache>): Promise<boolean> {
         const now = new Date();
         const allCache = await this.getAllKeys();
         /**
@@ -76,12 +78,13 @@ export class CacheService {
         if (allCache && allCache.length >= this.cacheCapacity) {
             console.info('cache limit reached');
             await this.deleteByKey(allCache[0].key);
-            return this.cacheDao.set({ key: cache.key, value: cache.value, last_modified: now, ttl: addMinutes(now, 2) });
+            await this.cacheDao.set({ key: cache.key, value: cache.value, last_modified: now, ttl: addMinutes(now, 2) });
+            return true;
         }
         cache.ttl = addMinutes(now, 2);
         cache.last_modified = now;
         await this.cacheDao.set(cache);
-        return;
+        return true;
     }
 
 }
