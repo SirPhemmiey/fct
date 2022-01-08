@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { injectService } from "../../../middlewares/serviceMidleware";
-import { addToCache, deleteAllCache, deleteCacheByKey, getAllCacheData, getCacheByKey } from "./controller";
+import { addToCache, deleteAllCache, deleteCacheByKey, getAllKeys, getCacheByKey } from "./controller";
 
 const router = Router();
 
-router.get('/all', injectService, getAllCacheData);
+router.get('/all', injectService, getAllKeys);
 
 router.get('/:cacheKey', injectService, getCacheByKey);
 

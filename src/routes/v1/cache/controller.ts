@@ -8,13 +8,13 @@ import Boom from 'boom';
 
 const response = new ResponseFormat();
 
-export const getAllCacheData = (req: Request, res: Response) => {
+export const getAllKeys = (req: Request, res: Response) => {
     const base = (req as any).service as ServiceContainer;
-    return base.cacheService.getAll().then((cacheData) => {
+    return base.cacheService.getAllKeys().then((cacheKeys) => {
         response.handleSuccess(res, {
             status: messages.SUCCESS,
             statusCode: statusCode.OK,
-            data: cacheData,
+            data: cacheKeys,
         });
     }).catch((err) => {
         console.error(err.message);

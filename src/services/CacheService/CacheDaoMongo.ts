@@ -62,7 +62,7 @@ export class CacheDaoMongo implements CacheDao {
     set(cache: Cache): Promise<void> {
         return this.model.findOneAndUpdate({ key: cache.key }, {
             '$set': cache,
-        }, { new: true, upsert: true, }).then((r) => {
+        }, { upsert: true, }).then((r) => {
             return;
         })
     }

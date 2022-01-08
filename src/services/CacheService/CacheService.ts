@@ -1,5 +1,5 @@
-import { addMinutes } from "date-fns";
-import { generateRandomString } from "../../utils";
+// import { addMinutes } from "date-fns";
+import { addMinutes, generateRandomString } from "../../utils";
 import { CacheDao, Cache } from "./CacheDao";
 
 enum CacheType {
@@ -13,24 +13,28 @@ interface CacheResponse {
     value: string
 }
 
-const now = new Date();
-
 export class CacheService {
 
     constructor(private readonly cacheDao: CacheDao, private readonly cacheCapacity: number) { }
 
-    async getAll(): Promise<Cache[]> {
-        return this.cacheDao.getAll();
+    async getAllKeys(): Promise<Pick<Cache, 'key'>[]> {
+        const keys = await this.cacheDao.getAll();
+        return keys.map((k) => {
+            return {
+                key: k.key
+            }
+        });
     }
 
     async getByKey(key: string): Promise<CacheResponse> {
+        const now = new Date();
         const keyExists = await this.cacheDao.exists(key);
         let response: CacheResponse = { cacheType: CacheType.CacheMiss, key: key, value: '', };
         const generatedValue = generateRandomString();
         if (!keyExists) {
             //cache miss
-            await this.set({ key: key, value: generatedValue, ttl: addMinutes(now, 2), last_modified: now });
             response.value = generatedValue;
+            await this.set({ key: key, value: response.value, ttl: addMinutes(now, 2), last_modified: now });
             return response;
         }
 
@@ -40,11 +44,13 @@ export class CacheService {
 
         // If current time is greater than the TTL of the key, generate a new value
         if (now.getTime() > cache.ttl.getTime()) {
-            await this.set({ key, value: generatedValue, ttl: addMinutes(now, 2), last_modified: now });
             response.value = generatedValue;
+            console.info('TTL is passed, generate a new value and refresh TTL');
+            await this.set({ key, value: generatedValue, ttl: addMinutes(now, 2), last_modified: now });
         } else {
-            await this.set({ key, last_modified: now, ttl: addMinutes(now, 2) });
+            console.info('TTL still on time, refresh TTL');
             response.value = cache.value;
+            await this.set({ key, ttl: addMinutes(now, 2), last_modified: now });
         }
         return response;
     }
@@ -58,7 +64,8 @@ export class CacheService {
     }
 
     async set(cache: Partial<Cache>): Promise<void> {
-        const allCache = await this.getAll();
+        const now = new Date();
+        const allCache = await this.getAllKeys();
         /**
          * This approach is known as the LRU Cache method/approach
          * If the cache size/length is equal or greater than allowed capacity (at class instantiation)
@@ -67,13 +74,12 @@ export class CacheService {
          * This way, we won't exceed our cache limit/capacity at all
          */
         if (allCache && allCache.length >= this.cacheCapacity) {
-            console.log('hereee');
+            console.info('cache limit reached');
             await this.deleteByKey(allCache[0].key);
-            return this.cacheDao.set({ key: cache.key, last_modified: now, ttl: addMinutes(now, 2) });
+            return this.cacheDao.set({ key: cache.key, value: cache.value, last_modified: now, ttl: addMinutes(now, 2) });
         }
-        cache.ttl = now;
+        cache.ttl = addMinutes(now, 2);
         cache.last_modified = now;
-        console.log({cache});
         await this.cacheDao.set(cache);
         return;
     }
