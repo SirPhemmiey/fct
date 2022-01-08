@@ -38,7 +38,7 @@
 
 - The Cache Capacity is configurable and passed from the environment variable. So the capacity is set when the `CacheService` class gets instantiated.
 
-- OOP Paradigm was used
+- OOP Paradigm was used. Notable ones are `Polymorphism` (using `implement`) and `Inheritance` (using `extends`)
 
 - Unit testing was done
 
