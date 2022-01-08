@@ -51,3 +51,4 @@
 - More (smart) configuration on Logger (winston, bunyan)
 - Monitoring (with New Relic, Prometheus/Grafana)
 - Test coverage
+- Maybe i would have made the TTL configurable from the environment variable like cache capacity also. But i decided to make it 2 minutes (for testing purposes). Don't know if that's righr or wrong
