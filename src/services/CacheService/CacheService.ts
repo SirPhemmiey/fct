@@ -2,7 +2,7 @@
 import { addMinutes, generateRandomString } from "../../utils";
 import { CacheDao, Cache } from "./CacheDao";
 
-enum CacheType {
+export enum CacheType {
     CacheHit = 'CacheHit',
     CacheMiss = 'CacheMiss'
 }
@@ -45,7 +45,7 @@ export class CacheService {
         // If current time is greater than the TTL of the key, generate a new value
         if (now.getTime() > cache.ttl.getTime()) {
             response.value = generatedValue;
-            console.info('TTL is passed, generate a new value and refresh TTL');
+            console.info('TTL is elapsed, generate a new value and refresh TTL');
             await this.set({ key, value: generatedValue, ttl: addMinutes(now, 2), last_modified: now });
         } else {
             console.info('TTL still on time, refresh TTL');
@@ -70,8 +70,8 @@ export class CacheService {
          * This approach is known as the LRU Cache method/approach
          * If the cache size/length is equal or greater than allowed capacity (at class instantiation)
          * We're getting least used key by  sorting the last_modified date in ascending order (1)
-         * And then we're deleting it and replacing it with the new key
-         * This way, we won't exceed our cache limit/capacity at all
+         * And then we're deleting it and replacing it with a new key
+         * This way, we won't exceed our cache limit/capacity at all which is a business requirement
          */
         if (allCache && allCache.length >= this.cacheCapacity) {
             console.info('cache limit reached');

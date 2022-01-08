@@ -7,7 +7,9 @@ import { getEnv } from "../../env";
 //https://mongoosejs.com/docs/migrating_to_6.html#no-more-deprecation-warning-options
 
 const createConnection = (uri: string) => {
-    const conn = mongoose.createConnection(uri);
+    const conn = mongoose.createConnection(uri, {
+        useUnifiedTopology: false,
+    });
     conn.on('error', console.error.bind(console, 'mongo connection error:'));
     conn.once('open', function callback() {
         console.info('connection to mongodb successfull');

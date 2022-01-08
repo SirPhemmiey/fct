@@ -69,4 +69,4 @@ export class CacheDaoMongo implements CacheDao {
 
 }
 
-export const CacheModel = model<Cache>(DOCUMENT_NAME, schema);
+export const CacheModel = model(DOCUMENT_NAME, schema);

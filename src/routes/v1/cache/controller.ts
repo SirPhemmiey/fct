@@ -18,8 +18,8 @@ export const getAllKeys = (req: Request, res: Response) => {
         });
     }).catch((err) => {
         console.error(err.message);
-        const { output } = Boom.badRequest(err.message);
-        return response.handleError(res, output);
+        // const { output } = Boom.badRequest(err.message);
+        // return response.handleError(res, output);
     });
 };
 
