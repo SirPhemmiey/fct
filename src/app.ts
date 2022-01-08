@@ -6,6 +6,7 @@ import { cacheRoute } from './routes/v1/cache/resource';
 import { getEnv } from './env';
 import Boom from 'boom';
 import { ResponseFormat } from './core/ResponseFormat';
+import morgan from 'morgan';
 const response = new ResponseFormat();
 
 
@@ -25,9 +26,10 @@ app.get("/", (req, res) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(morgan("tiny"));
 
 // Routes
-app.use('/v1/cache', cacheRoute);
+app.use('/api/v1/cache', cacheRoute);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(new NotFoundError()));

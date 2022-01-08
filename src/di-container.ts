@@ -18,7 +18,7 @@ const CACHE_CAPACITY = getEnv().CACHE_CAPACITY;
  * configurations or settings that can be configurable and common to all "services/environments" etc
  */
 export interface Service {
-    environment: ENV,
+    //environment: ENV,
 }
 
 export interface ServiceContainer extends Service {
@@ -26,42 +26,35 @@ export interface ServiceContainer extends Service {
     cacheDao: CacheDao,
 }
 
-const createContainer = (baseService: Service) => {
-    const cacheDao = new CacheDaoMongo(getMongo(baseService.environment));
+const createContainer = () => {
+    const cacheDao = new CacheDaoMongo(getMongo());
     const cacheService = new CacheService(cacheDao, CACHE_CAPACITY);
 
     const container: ServiceContainer = {
-        ...baseService,
         cacheDao,
         cacheService,
     }
     return container;
 };
 
-const developmentBaseService: Service = {
-    environment: ENV.Development
-}; 
+// const developmentBaseService: Service = {
+//     environment: ENV.Development
+// }; 
 
-const stagingBaseService: Service = {
-    environment: ENV.Staging
-}; 
+// const stagingBaseService: Service = {
+//     environment: ENV.Staging
+// }; 
 
-const productionBaseService: Service = {
-    environment: ENV.Production
-};  
+// const productionBaseService: Service = {
+//     environment: ENV.Production
+// };  
 
-const developmentService = createContainer(developmentBaseService);
-const stagingService = createContainer(stagingBaseService);
-const productionService = createContainer(productionBaseService);
+// const developmentService = createContainer(developmentBaseService);
+// const stagingService = createContainer(stagingBaseService);
+// const productionService = createContainer(productionBaseService);
+const service = createContainer();
 
-//to use this service container anywhere else out of context
-export const getService = (env: ENV) => {
-    if (env === ENV.Development) {
-        return developmentService;
-    } else if (env === ENV.Staging) {
-        return stagingService;
-    } else if (env === ENV.Production) {
-        return productionService;
-    }
-    throw new Error("unknown env: " + env);
+//to use the service container anywhere else out of context (using the this keyword)
+export const getService = () => {
+    return service;
 };

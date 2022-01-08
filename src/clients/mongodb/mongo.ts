@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bluebird from "bluebird";
-import { ENV, getEnv } from "../../env";
+import { getEnv } from "../../env";
 
 (<any>mongoose).Promise = bluebird;
 
@@ -14,18 +14,7 @@ const createConnection = (uri: string) => {
     });
     return conn;
 }
-let connectionMap: { [e in ENV]: mongoose.Connection };
 
-export const getMongo = (env: ENV): mongoose.Connection => {
-    if (!connectionMap) {
-        connectionMap = {
-            [ENV.Development]: createConnection(getEnv().MONGO[ENV.Development].uri),
-            [ENV.Production]: createConnection(getEnv().MONGO[ENV.Production].uri),
-            [ENV.Staging]: createConnection(getEnv().MONGO[ENV.Staging].uri),
-        };
-    }
-    if (connectionMap[env]) {
-        return connectionMap[env];
-    }
-    throw new Error("Unknown env: "+env);
+export const getMongo = (): mongoose.Connection => {
+    return createConnection(getEnv().MONGO_URI);
 }

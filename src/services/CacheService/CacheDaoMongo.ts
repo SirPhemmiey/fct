@@ -1,5 +1,5 @@
 import { Schema, model, Document, Model, Connection } from 'mongoose';
-import { mapToMongoDoc, mapToMongoDocs } from '../../utils/MongoUtils';
+import { mapToMongoDoc, mapToMongoDocs } from '../../utils/mongoUtils';
 import { Cache, CacheDao } from './CacheDao';
 
 export const DOCUMENT_NAME = 'Cache';

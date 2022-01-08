@@ -1,16 +1,17 @@
 import { Router } from "express";
+import { injectService } from "../../../middlewares/serviceMidleware";
 import { addToCache, deleteAllCache, deleteCacheByKey, getAllCacheData, getCacheByKey } from "./controller";
 
 const router = Router();
 
-router.get('/all', getAllCacheData);
+router.get('/all', injectService, getAllCacheData);
 
-router.get('/:cacheKey', getCacheByKey);
+router.get('/:cacheKey', injectService, getCacheByKey);
 
-router.delete('/all', deleteAllCache);
+router.delete('/all', injectService, deleteAllCache);
 
-router.delete('/:cacheKey', deleteCacheByKey);
+router.delete('/:cacheKey', injectService, deleteCacheByKey);
 
-router.post('/add', addToCache);
+router.post('/add', injectService, addToCache);
 
-export { router as cacheRoute }
+export { router as cacheRoute };
